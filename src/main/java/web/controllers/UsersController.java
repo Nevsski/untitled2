@@ -5,28 +5,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.models.User;
-import web.services.UsersService;
+import web.services.UsersServiceImpl;
 
 @Controller
 @RequestMapping("/users")
-public class usersController {
+public class UsersController {
 
-    private final UsersService usersService;
+    private final UsersServiceImpl usersServiceImpl;
 
     @Autowired
-    public usersController(UsersService usersService) {
-        this.usersService = usersService;
+    public UsersController(UsersServiceImpl usersServiceImpl) {
+        this.usersServiceImpl = usersServiceImpl;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("users", usersService.findAll());
+        model.addAttribute("users", usersServiceImpl.findAll());
         return "users/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", usersService.findOne(id));
+        model.addAttribute("user", usersServiceImpl.findOne(id));
         return "users/show";
     }
 
@@ -37,25 +37,25 @@ public class usersController {
 
     @PostMapping()
     public String create(@ModelAttribute("user")  User person) {
-        usersService.save(person);
+        usersServiceImpl.save(person);
         return "redirect:/users";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", usersService.findOne(id));
+        model.addAttribute("user", usersServiceImpl.findOne(id));
         return "users/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") int id) {
-        usersService.update(id, user);
+        usersServiceImpl.update(id, user);
         return "redirect:/users";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        usersService.delete(id);
+        usersServiceImpl.delete(id);
         return "redirect:/users";
     }
 }
