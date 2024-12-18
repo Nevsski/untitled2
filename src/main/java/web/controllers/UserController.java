@@ -5,28 +5,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.models.User;
-import web.services.UsersServiceImpl;
+import web.services.UserServiceImpl;
 
 @Controller
 @RequestMapping("/users")
-public class UsersController {
+public class UserController {
 
-    private final UsersServiceImpl usersServiceImpl;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UsersController(UsersServiceImpl usersServiceImpl) {
-        this.usersServiceImpl = usersServiceImpl;
+    public UserController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("users", usersServiceImpl.findAll());
+        model.addAttribute("users", userServiceImpl.findAll());
         return "users/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", usersServiceImpl.findOne(id));
+        model.addAttribute("user", userServiceImpl.findOne(id));
         return "users/show";
     }
 
@@ -37,25 +37,25 @@ public class UsersController {
 
     @PostMapping()
     public String create(@ModelAttribute("user")  User person) {
-        usersServiceImpl.save(person);
+        userServiceImpl.save(person);
         return "redirect:/users";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", usersServiceImpl.findOne(id));
+        model.addAttribute("user", userServiceImpl.findOne(id));
         return "users/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") int id) {
-        usersServiceImpl.update(id, user);
+        userServiceImpl.update(id, user);
         return "redirect:/users";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        usersServiceImpl.delete(id);
+        userServiceImpl.delete(id);
         return "redirect:/users";
     }
 }
